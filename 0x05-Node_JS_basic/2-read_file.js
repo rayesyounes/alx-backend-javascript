@@ -1,34 +1,38 @@
 const fs = require('fs');
 
 function countStudents(path) {
-    if (!fs.existsSync(path)) {
-        throw new Error('Cannot load the database');
-    }
-
+  try {
     const data = fs.readFileSync(path, 'utf8');
+    if (!data) {
+      console.log('Cannot load the database');
+      return;
+    }
     const lines = data.split('\n');
-    const hashtable = {};
-    let students = -1;
-    for (const line of lines) {
-        if (line.trim() !== '') {
-            const columns = line.split(',');
-            const field = columns[3];
-            const firstname = columns[0];
-            if (students >= 0) {
-                if (!Object.hasOwnProperty.call(hashtable, field)) {
-                    hashtable[field] = [];
-                }
-                hashtable[field] = [...hashtable[field], firstname];
-            }
-            students += 1;
+    lines.shift(); // Remove the header line
+
+    const students = {};
+
+    lines.forEach((line) => {
+      if (line.trim() !== '') {
+        const [firstname, , , field] = line.split(',');
+        if (!students[field]) {
+          students[field] = [];
         }
-    }
-    console.log(`Number of students: ${students}`);
-    for (const key in hashtable) {
-        if (Object.hasOwnProperty.call(hashtable, key)) {
-            console.log(`Number of students in ${key}: ${hashtable[key].length}. List: ${hashtable[key].join(', ')}`);
-        }
-    }
+        students[field].push(firstname);
+      }
+    });
+
+    let output = '';
+    const fields = Object.keys(students);
+    fields.forEach((field) => {
+      output += `Number of students in ${field}: ${students[field].length}. List: ${students[field].join(', ')}\n`;
+    });
+
+    return output;
+
+  } catch (err) {
+    throw new Error('Cannot load the database');
+  }
 }
 
 module.exports = countStudents;
