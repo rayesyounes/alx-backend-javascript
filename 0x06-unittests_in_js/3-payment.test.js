@@ -1,7 +1,7 @@
 const {describe, it} = require("mocha");
 const sinon = require("sinon");
-const sendPaymentRequestToApi = require("../../alx-backend-javascript-v2/0x06-unittests_in_js/4-payment");
-const Utils = require("../../alx-backend-javascript-v2/0x06-unittests_in_js/utils");
+const sendPaymentRequestToApi = require("./3-payment");
+const Utils = require("./utils");
 const assert = require("assert");
 
 describe("sendPaymentRequestToApi", function() {

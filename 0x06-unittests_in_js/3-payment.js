@@ -1,4 +1,4 @@
-const Utils = require("../../alx-backend-javascript-v2/0x06-unittests_in_js/utils");
+const Utils = require("./utils");
 
 function sendPaymentRequestToApi(totalAmount, totalShipping) {
     const result = Utils.calculateNumber("SUM", totalAmount, totalShipping);
